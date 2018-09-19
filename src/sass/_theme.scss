@@ -1,0 +1,12 @@
+
+$primary-color: tomato;
+$secundary-color:lighten($primary-color,20%);
+
+$bg-items: red;
+$hover-bg-items: darken(red, 10%);
+$color-items: white;
+
+
+// Slider
+$colorSlider: darken($primary-color,40%);
+$bgSlider: white;

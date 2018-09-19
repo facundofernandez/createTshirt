@@ -1,0 +1,268 @@
+@import "theme";
+@import "base";
+@import "slider";
+
+
+.tshirtColors {
+  height: 450px;
+  padding: 10px;
+  background: $primary-color;
+  border-radius: 10px;
+  margin: 0 10px;
+
+  & > div {
+    border-radius: 50%;
+    margin: 5px 0;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    &:hover {
+      cursor: pointer;
+    }
+    
+  }
+}
+
+.controls {
+  width: 60px;
+  height: 450px;
+  padding: 5px;
+  background: $primary-color;
+  border-radius: 10px;
+  margin: 0 15px;
+  #img {
+    display: none;
+  }
+
+  .save {
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 5px;
+    background: gray;
+    border: 0;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.fonts {
+  position: absolute;
+  transform: translateX(calc(-50% - 300px));
+  background: $primary-color;
+  border-radius: 10px;
+  height: 450px;
+  width: 250px;
+  padding: 10px;
+  .colors {
+    display: flex;
+    flex-flow: wrap;
+    margin-top: 10px;
+    &:hover {
+      cursor: pointer;
+    }
+    div {
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 3px;
+      border-radius: 4px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+  textarea {
+    border: none;
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 18px;
+    width: 100%;
+    resize: none;
+    background: $secundary-color;
+    color: darken($primary-color,25%);
+  }
+  &.hide {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .listName {
+    margin-top: 20px;
+    .list {
+      opacity: 0;
+      color: darken($primary-color,25%);
+      visibility: hidden;
+      height: 40px * 5;
+      overflow-y: scroll;
+      background: $secundary-color;
+      margin-top: 10px;
+      display: none;
+      position: absolute;
+      z-index: 999;
+      width: 230px;
+      & > div {
+        padding: 10px;
+        height: 40px;
+        &:hover {
+          cursor: pointer;
+          color:darken($primary-color,10%);
+          background: darken($secundary-color,10%);
+        }
+      }
+      &.open {
+        opacity: 1;
+        visibility: visible;
+        display: block;
+      }
+      .arial {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .times {
+        font-family: "Times New Roman", Times, serif;
+      }
+      .courier {
+        font-family: "Courier New", Courier, monospace;
+      }
+      .cambria {
+        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+      }
+      .roboto {
+        font-family: "Roboto Slab", serif;
+      }
+      .indie {
+        font-family: "Indie Flower", cursive;
+      }
+
+      .anton {
+        font-family: "Anton", sans-serif;
+      }
+
+      .lobster {
+        font-family: "Lobster", cursive;
+      }
+
+      .pacifico {
+        font-family: "Pacifico", cursive;
+      }
+      .poor {
+        font-family: "Poor Story", cursive;
+      }
+      .shadows {
+        font-family: "Shadows Into Light", cursive;
+      }
+      .baloo {
+        font-family: "Baloo Tammudu", cursive;
+      }
+      .patua {
+        font-family: "Patua One", cursive;
+      }
+    }
+
+    .current {
+
+      overflow: hidden;
+      height: 40px;
+      padding: 8px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      color: darken($primary-color,25%);
+      background: $secundary-color;
+      &:hover {
+        cursor: pointer;
+      }
+      &:before {
+        content: "";
+        //top: 12px;
+        right: 10px;
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid darken($primary-color,25%);
+      }
+    }
+  }
+}
+
+#container {
+  .remeras {
+    display: flex;
+    justify-content: center;
+
+    .front,
+    .back {
+      margin: 10px;
+      padding: 10px;
+      background-color: #d3d3d3;
+      height: 100px;
+      width: 100px;
+      border-radius: 5px;
+      &:hover {
+        cursor: pointer;
+      }
+      .image {
+        background-size: contain;
+        background-repeat: no-repeat;
+        height: 100%;
+        width: 100%;
+
+        pointer-events: none;
+      }
+    }
+
+    .back {
+      .image {
+        background-image: url("/../../remera-back.png");
+      }
+    }
+    .front {
+      .image {
+        background-image: url("/../../remera-front.png");
+      }
+    }
+  }
+}
+
+
+// Clases aisladas
+
+.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+button.btn {
+  margin-top: 5px;
+  //padding: 5px;
+  border-radius: 5px;
+  display: inline;
+  border: 0;
+  font-size: 17px;
+  width: 50px;
+  height: 50px;
+
+  &:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  &:hover,
+  & label:hover {
+    cursor: pointer;
+    background: $secundary-color;
+  }
+
+  &.active {
+    background: black;
+    color: white;
+  }
+}
