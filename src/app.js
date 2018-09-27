@@ -1,42 +1,33 @@
 'use strict';
 
 import './sass/main.scss'
-//import {stage,layer,selected,createImage,createText,downloadURI,deleteItem,drawImage} from './libs/functions.js';
 
 let reader = new FileReader();
 let file = document.querySelector('input[type=file]');
-let imgNumber = 1;
+
 let texto = document.querySelector('#text');
-
 let size = document.querySelector('#size');
-
 let alignL = document.querySelector('#alignL');
 let alignR = document.querySelector('#alignR');
 let alignC = document.querySelector('#alignC');
 let alignJ = document.querySelector('#alignJ');
 let underline = document.querySelector('#underline');
 let bold = document.querySelector('#bold');
-
 let stage = createStage();
-
 let remeras = document.createElement('div');
 remeras.classList.add('remeras');
 let back = document.createElement('div');
 let front = document.createElement('div');
-
 let layerFront = new Konva.Layer({ visible: true });
 let layerBack = new Konva.Layer({ visible: false });
-
 let layer = layerFront;
-
-
 let selected = null;
-
 let colors = document.querySelector('.colors');
 let tshirtColors = document.querySelector('.tshirtColors');
-
 let current = document.querySelector(".current");
 let list = document.querySelector(".list");
+let arrayTshirtColors = ['White', 'Silver', 'Gray', 'Black', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Blue', 'Navy', 'Purple'];
+let arrayTextColors = ['White', 'Silver', 'Gray', 'Black', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Blue', 'Navy', 'Fuchsia', 'Purple'];
 
 back.innerHTML = "<div class='image'></div>";
 front.innerHTML = "<div class='image'></div>";
@@ -68,10 +59,9 @@ remeras.appendChild(back);
 
 document.querySelector('#container').appendChild(remeras);
 
-
 actualizarEstadoDeControles();
 
-['White', 'Silver', 'Gray', 'Black', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Blue', 'Navy', 'Fuchsia', 'Purple'].map((color) => {
+arrayTextColors.map((color) => {
     let item = document.createElement('div');
     item.style.background = color;
     //item.innerHTML = color;
@@ -87,7 +77,7 @@ actualizarEstadoDeControles();
     colors.appendChild(item);
 });
 
-['White', 'Silver', 'Gray', 'Black', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Blue', 'Navy', 'Purple'].map((color) => {
+arrayTshirtColors.map((color) => {
     let item = document.createElement('div');
     item.style.background = color;
 
@@ -218,7 +208,8 @@ stage.on('click', function (e) {
 
 })
 
-createImage('remera-front.png', {
+
+createImage('dist/img/remera-front.png', {
     x: 200 - (250 / 2),
     y: 170 - (250 / 2),
     name: "remera",
@@ -226,8 +217,7 @@ createImage('remera-front.png', {
     draggable: false,
     layer: layerFront
 });
-
-createImage('remera-back.png', {
+createImage('dist/img/remera-back.png', {
     x: 200 - (250 / 2),
     y: 170 - (250 / 2),
     name: "remera",
@@ -359,7 +349,9 @@ function downloadURI(uri, name, callback) {
 }
 
 function drawImage(params) {
-    let group = new Konva.Group({ x: 0, y: 0, draggable: params.draggable, name: params.name });
+    let group = new Konva.Group({ 
+        x: 0, y: 0, draggable: params.draggable, name: params.name 
+    });
 
     let img = new Konva.Image(params);
     let ratio = img.getHeight() / img.getWidth();
@@ -403,7 +395,7 @@ function drawImage(params) {
         })
 
         group.on('mouseout', (e) => {
-            
+
             e.target.setStroke('red');
             e.target.strokeEnabled(false);
 
@@ -419,7 +411,7 @@ function drawImage(params) {
 
     group.add(img);
     group.add(box);
-   
+
     if (params.transformer) {
         stage.on('click', function (e) {
 
@@ -447,7 +439,7 @@ function drawImage(params) {
             layer.add(tr);
 
             tr.attachTo(e.target.parent);
-            
+
             if (params.layer) {
                 params.layer.draw();
             } else {
@@ -480,8 +472,10 @@ function createImage(url, params) {
 
 function createText() {
 
+    // Creo un grupo
     let group = new Konva.Group({ x: 0, y: 0, draggable: true, name: "text" });
 
+    // Creo el texto
     let textNode = new Konva.Text({
         text: 'Some text here',
         x: 50,
@@ -492,30 +486,37 @@ function createText() {
 
     var boundingBox = textNode.getClientRect({ relativeTo: group });
 
+    // Creo contorno
     var box = new Konva.Rect({
         x: boundingBox.x,
         y: boundingBox.y,
         width: boundingBox.width,
         height: boundingBox.height,
         stroke: 'red',
-        strokeWidth: 1,
+        strokeWidth: 2,
         strokeEnabled: false
     });
 
+    // Asigno Eventos
     group.on('mouseover', (e) => {
-        e.target.strokeEnabled(true);
+        box.strokeEnabled(true);
         document.body.style.cursor = 'pointer';
-        layer.draw()
+
+        if (stage.find('Transformer').length) {
+            box.strokeEnabled(false);
+
+        }
+
+        layer.draw();
     })
 
     group.on('mouseout', (e) => {
-        e.target.strokeEnabled(false);
+        box.strokeEnabled(false);
 
         document.body.style.cursor = 'default';
         layer.draw()
     })
 
-    console.log(textNode)
     textNode.on('fontSizeChange', function (evt) {
 
         var boundingBox = textNode.getClientRect({ relativeTo: group });
@@ -532,37 +533,49 @@ function createText() {
 
     });
 
-    stage.on('click', function (e) {
+    group.on('click', (e) => {
 
-
-        if (e.target.hasName("remera") || e.target.hasName("stage") || e.target.hasName("text")) {
-            stage.find('Transformer').destroy();
-            layer.draw();
-            return;
+        if (stage.find('Transformer').length) {
+            box.strokeEnabled(false);
         }
 
-        if (!e.target.parent.hasName("text")) return;
-
-        stage.find('Transformer').destroy();
-        let tr = new Konva.Transformer({
-            enabledAnchors: ['top-right', 'top-left', 'bottom-left', 'bottom-right']
-        });
-        //group.add(tr)
-        layer.add(tr);
-
-        tr.attachTo(e.target.parent);
         layer.draw();
     })
 
     group.add(textNode);
     group.add(box);
     layer.add(group);
-    layer.draw();
+    //layer.draw();
     group.moveToTop();
 
     layer.draw();
 
 }
+
+stage.on('click', function (e) {
+
+    if (e.target.hasName("remera") || e.target.hasName("stage") || e.target.hasName("text")) {
+        stage.find('Transformer').destroy();
+        layer.draw();
+        return;
+    }
+
+    if (!e.target.parent.hasName("text")) return;
+
+    stage.find('Transformer').destroy();
+
+    let tr = new Konva.Transformer({
+        borderStroke: 'red',
+        borderDash: [3, 3],
+        enabledAnchors: ['top-right', 'top-left', 'bottom-left', 'bottom-right']
+    });
+
+    //group.add(tr)
+    layer.add(tr);
+    console.log(e.target);
+    tr.attachTo(e.target.parent);
+    layer.draw();
+})
 
 function createStage() {
     return new Konva.Stage({
@@ -570,7 +583,7 @@ function createStage() {
         width: 450,
         name: "stage",
         height: 450,
-        //opacity: .5
+        //opacity: .7
     });
 }
 
