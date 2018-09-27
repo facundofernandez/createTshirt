@@ -2,220 +2,45 @@
 @import "base";
 @import "slider";
 
-
-.tshirtColors {
-  box-shadow: 1px 1px 5px 0px #555;
-  z-index: 9999;
-  position: absolute;
-  height: 450px;
-  padding: 10px;
-  background: $primary-color;
-  border-radius: 10px;
-  //margin: 0 10px;
-  top:10px;
-  left: 10px;
-  & > div {
-    border-radius: 50%;
-    margin: 5px 0;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    flex-direction: column;
-    &:hover {
-      cursor: pointer;
-    }
-    
-  }
-}
-
-.controls {
-  box-shadow: 1px 1px 5px 0px #555;
-  z-index: 9999;
-  position: absolute;
-  top:10px;
-  right: 10px;
-  width: 60px;
-  height: 450px;
-  padding: 5px;
-  background: $primary-color;
-  border-radius: 10px;
-  //margin: 0 15px;
-  #img {
-    display: none;
-  }
-
-  .save {
-    font-size: 18px;
-    padding: 5px;
-    border-radius: 5px;
-    background: gray;
-    border: 0;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  & > div {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-.fonts {
-  position: absolute;
-  //transform: translateX(calc(-50% - 300px));
-  top:10px;
-  left:30px;
-  background: $primary-color;
-  border-radius: 10px;
-  height: 450px;
-  width: 250px;
-  padding: 10px;
-  z-index: 99999;
-  .colors {
-    display: flex;
-    flex-flow: wrap;
-    margin-top: 10px;
-    &:hover {
-      cursor: pointer;
-    }
-    div {
-      font-size: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 3px;
-      border-radius: 4px;
-      width: 30px;
-      height: 30px;
-    }
-  }
-  textarea {
-    border: none;
-    margin-top: 20px;
-    padding: 10px;
-    font-size: 18px;
-    width: 100%;
-    resize: none;
-    background: $secundary-color;
-    color: darken($primary-color,25%);
-  }
-  &.hide {
-    display: none;
-    opacity: 0;
-    visibility: hidden;
-  }
-  .listName {
-    margin-top: 20px;
-    .list {
-      opacity: 0;
-      color: darken($primary-color,25%);
-      visibility: hidden;
-      height: 40px * 5;
-      overflow-y: scroll;
-      background: $secundary-color;
-      margin-top: 10px;
-      display: none;
-      position: absolute;
-      z-index: 999;
-      width: 230px;
-      & > div {
-        padding: 10px;
-        height: 40px;
-        &:hover {
-          cursor: pointer;
-          color:darken($primary-color,10%);
-          background: darken($secundary-color,10%);
-        }
-      }
-      &.open {
-        opacity: 1;
-        visibility: visible;
-        display: block;
-      }
-      .arial {
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      .times {
-        font-family: "Times New Roman", Times, serif;
-      }
-      .courier {
-        font-family: "Courier New", Courier, monospace;
-      }
-      .cambria {
-        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-      }
-      .roboto {
-        font-family: "Roboto Slab", serif;
-      }
-      .indie {
-        font-family: "Indie Flower", cursive;
-      }
-
-      .anton {
-        font-family: "Anton", sans-serif;
-      }
-
-      .lobster {
-        font-family: "Lobster", cursive;
-      }
-
-      .pacifico {
-        font-family: "Pacifico", cursive;
-      }
-      .poor {
-        font-family: "Poor Story", cursive;
-      }
-      .shadows {
-        font-family: "Shadows Into Light", cursive;
-      }
-      .baloo {
-        font-family: "Baloo Tammudu", cursive;
-      }
-      .patua {
-        font-family: "Patua One", cursive;
-      }
-    }
-
-    .current {
-
-      overflow: hidden;
-      height: 40px;
-      padding: 8px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      color: darken($primary-color,25%);
-      background: $secundary-color;
-      &:hover {
-        cursor: pointer;
-      }
-      &:before {
-        content: "";
-        //top: 12px;
-        right: 10px;
-        position: absolute;
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-top: 10px solid darken($primary-color,25%);
-      }
-    }
-  }
-}
-
 #container {
-  position: absolute;
+  position: relative;
+
+  button.btn {
+    margin-top: 5px;
+    //padding: 5px;
+    border-radius: 5px;
+    display: inline;
+    border: 0;
+    font-size: 17px;
+    width: 50px;
+    height: 50px;
+
+    &:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    &:hover,
+    & label:hover {
+      cursor: pointer;
+      background: $secundary-color;
+    }
+
+    &.active {
+      background: black;
+      color: white;
+    }
+  }
+
   .remeras {
     position: absolute;
-    display: flex;
+    display: none;
     justify-content: center;
     z-index: 99999;
     bottom: 10px;
     background: #444;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, 0);
 
     .front,
     .back {
@@ -240,7 +65,7 @@
 
     .back {
       .image {
-        background-image: url('/dist/img/remera-back.png');
+        background-image: url("/dist/img/remera-back.png");
       }
     }
     .front {
@@ -249,8 +74,236 @@
       }
     }
   }
-}
 
+  #canvas-container {
+    .konvajs-content {
+      background: #d3d3d3;
+      //box-shadow: 0px 0px 12px 0px #333;
+      //margin-bottom: 10px;
+      //border-radius: 10px;
+    }
+  }
+
+  .tshirtColors {
+    box-shadow: 1px 1px 5px 0px #555;
+    z-index: 9999;
+    position: absolute;
+    height: 90%;
+    padding: 10px;
+    background: $primary-color;
+    border-radius: 5px;
+    //margin: 0 10px;
+    top: 5%;
+    left: 10px;
+    & > div {
+      border-radius: 50%;
+      margin: 5px 0;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      flex-direction: column;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .controls {
+    box-shadow: 1px 1px 5px 0px #555;
+    z-index: 9999;
+    position: absolute;
+    top: 5%;
+    right: 10px;
+    width: 60px;
+    height: 90%;
+    padding: 5px;
+    background: $primary-color;
+    border-radius: 5px;
+
+    //margin: 0 15px;
+    #img {
+      display: none;
+    }
+
+    .save {
+      font-size: 18px;
+      padding: 5px;
+      border-radius: 5px;
+      background: gray;
+      border: 0;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #btnTshirtFront,
+    #btnTshirtBack {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .fonts {
+    box-shadow: 1px 1px 5px 0px #555;
+    position: absolute;
+    //transform: translateX(calc(-50% - 300px));
+    top: 5%;
+    left: 60px;
+    background: $primary-color;
+    border-radius: 5px;
+    height: 450px;
+    width: 250px;
+    padding: 10px;
+    z-index: 99999;
+    .colors {
+      display: flex;
+      flex-flow: wrap;
+      margin-top: 10px;
+      &:hover {
+        cursor: pointer;
+      }
+      div {
+        font-size: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 3px;
+        border-radius: 4px;
+        width: 30px;
+        height: 30px;
+      }
+    }
+    textarea {
+      border: none;
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 18px;
+      width: 100%;
+      resize: none;
+      background: $secundary-color;
+      color: darken($primary-color, 25%);
+    }
+    &.hide {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .listName {
+      margin-top: 20px;
+      .list {
+        
+        opacity: 0;
+        color: darken($primary-color, 25%);
+        visibility: hidden;
+        height: 40px * 5;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        background: $secundary-color;
+        margin-top: 10px;
+        display: none;
+        position: absolute;
+        z-index: 999;
+        width: 230px;
+        & > div {
+          padding: 10px;
+          height: 40px;
+          width: 200%;
+          &:hover {
+            cursor: pointer;
+            color: darken($primary-color, 10%);
+            background: darken($secundary-color, 10%);
+          }
+        }
+        &.open {
+          opacity: 1;
+          visibility: visible;
+          display: block;
+        }
+        .arial {
+          font-family: Arial, Helvetica, sans-serif;
+        }
+        .times {
+          font-family: "Times New Roman", Times, serif;
+        }
+        .courier {
+          font-family: "Courier New", Courier, monospace;
+        }
+        .cambria {
+          font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+        }
+        .roboto {
+          font-family: "Roboto Slab", serif;
+        }
+        .indie {
+          font-family: "Indie Flower", cursive;
+        }
+
+        .anton {
+          font-family: "Anton", sans-serif;
+        }
+
+        .lobster {
+          font-family: "Lobster", cursive;
+        }
+
+        .pacifico {
+          font-family: "Pacifico", cursive;
+        }
+        .poor {
+          font-family: "Poor Story", cursive;
+        }
+        .shadows {
+          font-family: "Shadows Into Light", cursive;
+        }
+        .baloo {
+          font-family: "Baloo Tammudu", cursive;
+        }
+        .patua {
+          font-family: "Patua One", cursive;
+        }
+      }
+
+      .current {
+        overflow: hidden;
+        //height: 40px;
+        padding: 8px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        color: darken($primary-color, 25%);
+        background: $secundary-color;
+        &:hover {
+          cursor: pointer;
+        }
+        &:before {
+          content: "";
+          //top: 12px;
+          right: 10px;
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-top: 10px solid darken($primary-color, 25%);
+        }
+      }
+    }
+    button.btn {
+      width: 35px;
+      height: 35px;
+    }
+  }
+}
 
 // Clases aisladas
 
@@ -259,29 +312,10 @@
   visibility: visible;
 }
 
-button.btn {
-  margin-top: 5px;
-  //padding: 5px;
-  border-radius: 5px;
-  display: inline;
-  border: 0;
-  font-size: 17px;
-  width: 50px;
-  height: 50px;
 
-  &:disabled {
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
-  &:hover,
-  & label:hover {
-    cursor: pointer;
-    background: $secundary-color;
-  }
-
-  &.active {
-    background: black;
-    color: white;
-  }
+.no-seleccionable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; 
 }

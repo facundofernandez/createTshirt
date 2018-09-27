@@ -2,6 +2,21 @@
 
 import './sass/main.scss'
 
+let CANVAS = {
+    width: 1000,
+    height: 500,
+    center: {
+        x: 500,
+        y: 250
+    },
+    remera:{
+        front:'',
+        back:''
+    }
+}
+
+let stage = createStage();
+
 let reader = new FileReader();
 let file = document.querySelector('input[type=file]');
 
@@ -13,11 +28,11 @@ let alignC = document.querySelector('#alignC');
 let alignJ = document.querySelector('#alignJ');
 let underline = document.querySelector('#underline');
 let bold = document.querySelector('#bold');
-let stage = createStage();
+
 let remeras = document.createElement('div');
 remeras.classList.add('remeras');
-let back = document.createElement('div');
-let front = document.createElement('div');
+let back = document.querySelector('#btnTshirtBack');
+let front = document.querySelector('#btnTshirtFront');
 let layerFront = new Konva.Layer({ visible: true });
 let layerBack = new Konva.Layer({ visible: false });
 let layer = layerFront;
@@ -29,33 +44,24 @@ let list = document.querySelector(".list");
 let arrayTshirtColors = ['White', 'Silver', 'Gray', 'Black', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Blue', 'Navy', 'Purple'];
 let arrayTextColors = ['White', 'Silver', 'Gray', 'Black', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Blue', 'Navy', 'Fuchsia', 'Purple'];
 
-back.innerHTML = "<div class='image'></div>";
-front.innerHTML = "<div class='image'></div>";
+front.addEventListener('click', (e) => {
+    layerBack.visible(false);
+    layerFront.visible(true);
+    layer = layerFront;
+    layerBack.draw();
+    layerFront.draw();
+    layer.draw();
+}, false);
 
-back.classList.add('back');
-front.classList.add('front');
+back.addEventListener('click', (e) => {
+    layerFront.visible(false);
+    layerBack.visible(true);
+    layer = layerBack;
+    layerBack.draw();
+    layerFront.draw();
+    layer.draw();
+}, false);
 
-remeras.appendChild(front);
-remeras.appendChild(back);
-
-[back, front].map((elem) => {
-    elem.addEventListener('click', (e) => {
-
-        if (e.target.classList.contains('front')) {
-            layerBack.visible(false);
-            layerFront.visible(true);
-            layer = layerFront;
-
-        } else {
-            layerFront.visible(false);
-            layerBack.visible(true);
-            layer = layerBack;
-        }
-        layerBack.draw();
-        layerFront.draw();
-        layer.draw();
-    });
-});
 
 document.querySelector('#container').appendChild(remeras);
 
@@ -94,7 +100,7 @@ arrayTshirtColors.map((color) => {
         layerBack.draw();
         layerBack.find('Image')[0].moveToBottom();
         layerBack.draw();
-        document.querySelector('.back .image').style.backgroundImage = `url(${layerBack.toDataURL({ width: '450', height: '450', quality: 1 })})`;
+        //document.querySelector('.back .image').style.backgroundImage = `url(${layerBack.toDataURL({ width: '450', height: '450', quality: 1 })})`;
 
         layerBack.visible(false);
 
@@ -108,7 +114,7 @@ arrayTshirtColors.map((color) => {
         layerFront.draw();
         layerFront.find('Image')[0].moveToBottom();
         layerFront.draw();
-        document.querySelector('.front .image').style.backgroundImage = `url(${layerFront.toDataURL({ width: '450', height: '450', quality: 1 })})`;
+        //document.querySelector('.front .image').style.backgroundImage = `url(${layerFront.toDataURL({ width: '450', height: '450', quality: 1 })})`;
 
         layerFront.visible(false);
 
@@ -167,64 +173,36 @@ arrayTshirtColors.map((color) => {
     })
 });
 
-layerBack.scale({ x: .5, y: .5 });
-layerFront.scale({ x: .5, y: .5 });
+//layerBack.scale({ x: .5, y: .5 });
+//layerFront.scale({ x: .5, y: .5 });
 layerBack.draw();
 layerFront.draw();
 
 stage.add(layerBack, layerFront);
 
-stage.on('click', function (e) {
-
-    ocultarControl('fonts');
-    actualizarEstadoDeControles();
-    if (
-        !e.target.parent || (
-            !e.target.parent.hasName("text") &&
-            !e.target.parent.hasName("img")
-        )
-
-    ) {
-        selected = null;
-        actualizarEstadoDeControles();
-        return;
-    }
-
-    selected = e.target.parent;
-    actualizarEstadoDeControles();
-    switch (e.target.parent.getName()) {
-        case "text": {
-            document.querySelector('.fonts').classList.toggle('hide');
-            console.log(selected.find('Text')[0].getText())
-            document.querySelector('#text').value = selected.find('Text')[0].getText();
-
-            break;
-        }
-        case "img": {
-
-            break;
-        }
-    }
-
-})
 
 
-createImage('dist/img/remera-front.png', {
-    x: 200 - (250 / 2),
-    y: 170 - (250 / 2),
+
+//createImage('dist/img/remera-front.png', {
+createImage('dist/img/Remera-blanca-frente.png', {
+    x: 500 - 200,
     name: "remera",
-    cwidth: 750,
+    cwidth: 400,
     draggable: false,
     layer: layerFront
+}).then((img)=>{
+    CANVAS.remera.front = img;
 });
-createImage('dist/img/remera-back.png', {
-    x: 200 - (250 / 2),
-    y: 170 - (250 / 2),
+//createImage('dist/img/remera-back.png', {
+createImage('dist/img/Remera-blanca-dorso.png', {
+    x: 500 - 200,
     name: "remera",
-    cwidth: 750,
+    cwidth: 400,
     layer: layerBack,
     draggable: false
-});
+}).then((img)=>{
+    CANVAS.remera.back = img;
+});;
 /*********************************************************************** */
 /*
 let layerPattern = new Konva.Layer();
@@ -245,6 +223,7 @@ img1.onload = () => {
         image: canvas,
         draggable: true
     });
+    console.log(img)
     layerPattern.add(img);
     layerPattern.draw();
 
@@ -291,7 +270,6 @@ document.querySelector('#delete').addEventListener('click', deleteItem);
 
 document.querySelector('#layerUp').addEventListener('click', () => {
     if (selected) {
-        console.log(selected)
         selected.moveUp();
         layer.draw();
     } else {
@@ -411,11 +389,15 @@ function downloadURI(uri, name, callback) {
 }
 
 function drawImage(params) {
-    let group = new Konva.Group({
-        x: 0, y: 0, draggable: params.draggable, name: params.name
+
+    let img = new Konva.Image({
+        x: 0, y: 0,
+        name: params.name,
+        draggable: params.draggable,
+        layer: params.layer,
+        image: params.image
     });
 
-    let img = new Konva.Image(params);
     let ratio = img.getHeight() / img.getWidth();
 
     if (!params.cwidth) params.cwidth = 100;
@@ -423,7 +405,16 @@ function drawImage(params) {
     img.setWidth(params.cwidth);
     img.setHeight(params.cwidth * ratio);
 
+    let group = new Konva.Group({
+        x: params.x, y: 250 - img.getHeight() / 2, draggable: params.draggable, name: params.name
+    });
+
     var boundingBox = img.getClientRect({ relativeTo: group });
+
+    group.position({
+        x: CANVAS.center.x + -1 * boundingBox.width / 2,
+        y: CANVAS.center.y + -1 * boundingBox.height / 2
+    });
 
     var box = new Konva.Rect({
         x: boundingBox.x,
@@ -535,18 +526,25 @@ function createImage(url, params) {
 function createText() {
 
     // Creo un grupo
-    let group = new Konva.Group({ x: 0, y: 0, draggable: true, name: "text" });
+    let group = new Konva.Group({ x: CANVAS.center.x, y: CANVAS.center.y, draggable: true, name: "text" });
 
     // Creo el texto
     let textNode = new Konva.Text({
         text: 'Some text here',
-        x: 50,
-        y: 50,
+        x: 0, y: 0,
         fontSize: 30,
-        fontFamily: 'Calibri'
+        fontFamily: 'Calibri',
+
     });
 
     var boundingBox = textNode.getClientRect({ relativeTo: group });
+
+    group.position({
+        x: CANVAS.center.x + -1 * boundingBox.width / 2,
+        y: CANVAS.center.y + -1 * boundingBox.height / 2
+    });
+
+    console.log(textNode)
 
     // Creo contorno
     var box = new Konva.Rect({
@@ -597,11 +595,48 @@ function createText() {
 
     group.on('click', (e) => {
 
+        resetFontsControl();
+        mostrarControl('fonts');
+
         if (stage.find('Transformer').length) {
             box.strokeEnabled(false);
         }
 
         layer.draw();
+
+        document.querySelector('#text').value = textNode.attrs.text;
+        document.querySelector('.current').innerHTML = textNode.attrs.fontFamily;
+        document.querySelector('.current').style.fontFamily = textNode.attrs.fontFamily;
+        document.querySelector('#size').value = textNode.attrs.fontSize;
+
+        if (textNode.attrs.fontStyle === "bold") {
+            document.querySelector('#bold').classList.add('active');
+        }
+
+        if (textNode.attrs.textDecoration === "underline") {
+            document.querySelector('#bold').classList.add('active');
+        }
+
+        switch (textNode.attrs.align) {
+            case "left": {
+                document.querySelector('#alignL').classList.add('active');
+                break;
+            }
+            case "center": {
+                document.querySelector('#alignC').classList.add('active');
+                break;
+            }
+            case "right": {
+                document.querySelector('#alignR').classList.add('active');
+                break;
+            }
+            case "justify": {
+                document.querySelector('#alignJ').classList.add('active');
+                break;
+            }
+        }
+
+        console.log(textNode.attrs)
     })
 
     group.add(textNode);
@@ -613,6 +648,26 @@ function createText() {
     layer.draw();
 
 }
+
+stage.on('click', function (e) {
+
+    if (
+        !e.target.parent || (
+            !e.target.parent.hasName("text") &&
+            !e.target.parent.hasName("img")
+        )
+
+    ) {
+        selected = null;
+        actualizarEstadoDeControles();
+        ocultarControl('fonts');
+        return;
+    }
+
+    selected = e.target.parent;
+    actualizarEstadoDeControles();
+
+})
 
 stage.on('click', function (e) {
 
@@ -640,10 +695,10 @@ stage.on('click', function (e) {
 
 function createStage() {
     return new Konva.Stage({
-        container: 'container',
-        width: window.innerWidth,
-        name: "stage",
-        height: window.innerHeight,
+        container: 'canvas-container',
+        width: 1000,
+        height: 500,
+        name: "stage"
         //opacity: .7
     });
 }
@@ -662,6 +717,7 @@ function deleteItem() {
 }
 
 function ocultarControl(id) {
+    console.log('ocultar')
     switch (id) {
         case 'fonts': {
             document.querySelector('.fonts').classList.add('hide');
@@ -669,6 +725,16 @@ function ocultarControl(id) {
     }
 }
 
+function mostrarControl(id) {
+    console.log('mostrar')
+    switch (id) {
+        case 'fonts': {
+            document.querySelector('.fonts').classList.remove('hide');
+        }
+    }
+}
+
+/*
 setInterval(() => {
     if (layer === layerFront) {
         document.querySelector('.front .image').style.backgroundImage = `url(${layerFront.toDataURL({ width: '450', height: '450', quality: 1 })})`;
@@ -678,7 +744,7 @@ setInterval(() => {
 
 
 }, 1000);
-
+*/
 function getRgb(color) {
     let rgb = {};
     switch (color) {
@@ -780,7 +846,7 @@ function actualizarEstadoDeControles() {
     let btnDelete = document.querySelector('#delete');
     let btnLayerUp = document.querySelector('#layerUp');
     let btnLayerDown = document.querySelector('#layerDown');
-    console.log("actualizarEstadoDeControles", selected)
+
     if (selected) {
         btnDelete.removeAttribute("disabled");
         btnLayerUp.removeAttribute("disabled");
@@ -790,4 +856,24 @@ function actualizarEstadoDeControles() {
         btnLayerUp.setAttribute("disabled", true);
         btnLayerDown.setAttribute("disabled", true);
     }
+}
+
+function resetFontsControl() {
+    let btnBold = document.querySelector('#bold');
+    let btnUnderline = document.querySelector('#underline');
+    let btnAlignL = document.querySelector('#alignL');
+    let btnAlignR = document.querySelector('#alignR');
+    let btnAlignJ = document.querySelector('#alignJ');
+    let btnAlignC = document.querySelector('#alignC');
+    let text = document.querySelector('#text');
+    let size = document.querySelector('#size');
+
+    [btnBold, btnUnderline, btnAlignL, btnAlignR, btnAlignC, btnAlignJ].map((btn) => {
+        if (btn.classList.contains('active')) {
+            btn.classList.remove('active')
+        }
+    });
+
+    text.value = "Some text here";
+    size.value = 20;
 }
