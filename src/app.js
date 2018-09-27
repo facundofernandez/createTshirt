@@ -225,7 +225,66 @@ createImage('dist/img/remera-back.png', {
     layer: layerBack,
     draggable: false
 });
+/*********************************************************************** */
+/*
+let layerPattern = new Konva.Layer();
+stage.add(layerPattern);
+let img1 = new Image(),
+    img2 = new Image();
+img1.src = "https://www.lasermendoza.com.ar/wp-content/uploads/2017/03/Remera-blanca-frente-768x824.png";
+img2.src = "http://www.lastorresdelbayo.com/datos/uploads/mod_links/thumbnail_1505922539_whatsapp-flag-icons-95406.png";
 
+
+img1.onload = () => {
+
+    var canvas = createCompositedCanvas(img1, img2);
+    // use the in-memory canvas as an image source for Konva.Image
+    var img = new Konva.Image({
+        x: 0,
+        y: 0,
+        image: canvas,
+        draggable: true
+    });
+    layerPattern.add(img);
+    layerPattern.draw();
+
+    function createCompositedCanvas(img1, img2) {
+        // create canvas
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        canvas.width = img1.width;
+        canvas.height = img1.height;
+        // create a pattern  
+        ctx.fillStyle = ctx.createPattern(createPattern(img2,30), "repeat");
+        // fill canvas with pattern
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // use blending mode multiply
+        ctx.globalCompositeOperation = "multiply";
+        // draw sofa on top
+        ctx.drawImage(img1, 0, 0, img1.width * .5, img1.height * .5);
+        // change composition mode (blending mode is automatically set to normal)
+        ctx.globalCompositeOperation = "destination-in";
+        // draw to cut-out sofa
+        ctx.drawImage(img1, 0, 0, img1.width * .5, img1.height * .5);
+        //
+        //document.body.appendChild(canvas);
+        return canvas;
+    }
+
+    function createPattern(img, size) {
+
+        let canvasPattern = document.createElement("canvas");
+        let contextPattern = canvasPattern.getContext("2d");
+
+        canvasPattern.width = size;
+        canvasPattern.height = size;
+        contextPattern.drawImage(img, 0, 0, size, size);
+
+        return canvasPattern;
+    }
+}
+*/
+/*********************************************************************** */
 
 document.querySelector('#newText').addEventListener('click', createText);
 document.querySelector('#delete').addEventListener('click', deleteItem);
@@ -303,7 +362,7 @@ texto.addEventListener('input', function (e) {
         layer.draw();
         selected.find('Rect')[0].setWidth(w);
         selected.find('Rect')[0].setHeight(h);
-        
+
         layer.draw();
     }
 });
@@ -352,8 +411,8 @@ function downloadURI(uri, name, callback) {
 }
 
 function drawImage(params) {
-    let group = new Konva.Group({ 
-        x: 0, y: 0, draggable: params.draggable, name: params.name 
+    let group = new Konva.Group({
+        x: 0, y: 0, draggable: params.draggable, name: params.name
     });
 
     let img = new Konva.Image(params);
@@ -582,9 +641,9 @@ stage.on('click', function (e) {
 function createStage() {
     return new Konva.Stage({
         container: 'container',
-        width: 450,
+        width: window.innerWidth,
         name: "stage",
-        height: 450,
+        height: window.innerHeight,
         //opacity: .7
     });
 }
