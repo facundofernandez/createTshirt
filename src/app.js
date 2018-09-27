@@ -292,15 +292,18 @@ size.addEventListener('input', function (e) {
 texto.addEventListener('input', function (e) {
     if (selected) {
         let text = selected.find('Text')[0];
+        text.text(e.target.value);
+        layer.draw();
         let w = text.getWidth();
         let h = text.getHeight();
 
-        stage.find('Transformer')[0].setWidth(w + 20);
+        stage.find('Transformer')[0].setWidth(w);
+        stage.find('Transformer')[0].setHeight(h);
         stage.find('Transformer')[0].forceUpdate();
-
-        selected.find('Rect')[0].setWidth(w + 20);
-        selected.find('Rect')[0].setHeight(h + 20);
-        text.text(e.target.value);
+        layer.draw();
+        selected.find('Rect')[0].setWidth(w);
+        selected.find('Rect')[0].setHeight(h);
+        
         layer.draw();
     }
 });
@@ -327,11 +330,11 @@ current.addEventListener("click", e => {
         text = selected.find('Text')[0];
         let w = text.getWidth();
         let h = text.getHeight();
-        stage.find('Transformer')[0].setWidth(w + 20);
+        stage.find('Transformer')[0].setWidth(w);
         stage.find('Transformer')[0].forceUpdate();
-
-        selected.find('Rect')[0].setWidth(w + 20);
-        selected.find('Rect')[0].setHeight(h + 20);
+        layer.draw();
+        selected.find('Rect')[0].setWidth(w);
+        selected.find('Rect')[0].setHeight(h);
 
         layer.draw();
     });
@@ -572,7 +575,6 @@ stage.on('click', function (e) {
 
     //group.add(tr)
     layer.add(tr);
-    console.log(e.target);
     tr.attachTo(e.target.parent);
     layer.draw();
 })
